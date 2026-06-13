@@ -1,33 +1,37 @@
 const popup = document.querySelector('popup-overlay');
 const openPopupBtn = document.querySelector('#show-popup');
 const closePopupBtn = document.querySelector('.popup-close');
-const popupForm = document.querySelector('form');
+const popupForm = document.querySelector('popup-form');
 
-openPopupBtn.addEventListener('click', () =>{
-    popup.computedStyleMap.display = 'flex'
-})
-closePopupBtn.addEventListener('click', () => {
-    popup.style.display = 'none'
-})
-
-popup.addEventListener('click', (event) => {
-    if (event.target === popup){
-        popup.style.display = 'none'
+popupOverlay.addEventListener('click', (event) =>{
+    if (event.target === popupOverlay){
+        popupOverlay.classList.remove('show');
     }
-})
-
-FormData.addEventListener('submit', (event) => {
-    event.prevent()
-    popup.style.display = 'none'
-    FormData.reset()
-})
+});
+showPopupBtn.addEventListener('click', () => {
+    popupOverlay.classList.add('show');
+});
+popupClose.addEventListener('click', (event) => {
+    popupOverlay.classList.remove('show');
+});
+popupForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    popupOverlay.classList.remove('show');
+    popupForm.reset();
+});
 
 //аккордеон
-const accordionHeaders = document.querySelector('.accordion')
-accordionHeaders.each((header) => {
+const headers = document.querySelectorAll('.accordion-header')
+headers.forEach((header) => {
     header.addEventListener('click', () => {
-        const content = header.element
+        const content = header.nextElementSibling
         const isOpen = header.classList.contains('active')
-        accordionHeaders.each((item) => {
+        if (isOpen) {
+            content.style.maxHeight = null
+        } else {
+            content.style.maxHeight = content.scrollHeight + 'px'
         }
-    }
+        header.classList.toggle('active')
+        
+    });
+});
